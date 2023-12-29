@@ -21,13 +21,84 @@ public class TimesheetEntity {
 	private String supervisorName;
 	private String assignmentName;
 	private String holidaysInput;
+	private String status;
 	private List<DaywiseActivity> timesheetData;
-
-	public TimesheetEntity() {
+	
+	public String getId() {
+		return id;
 	}
-
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getEmployeeName() {
+		return employeeName;
+	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+	public String getEmployeeNumber() {
+		return employeeNumber;
+	}
+	public void setEmployeeNumber(String employeeNumber) {
+		this.employeeNumber = employeeNumber;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getClientName() {
+		return clientName;
+	}
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+	public String getSupervisorName() {
+		return supervisorName;
+	}
+	public void setSupervisorName(String supervisorName) {
+		this.supervisorName = supervisorName;
+	}
+	public String getAssignmentName() {
+		return assignmentName;
+	}
+	public void setAssignmentName(String assignmentName) {
+		this.assignmentName = assignmentName;
+	}
+	public String getHolidaysInput() {
+		return holidaysInput;
+	}
+	public void setHolidaysInput(String holidaysInput) {
+		this.holidaysInput = holidaysInput;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public List<DaywiseActivity> getTimesheetData() {
+		return timesheetData;
+	}
+	public void setTimesheetData(List<DaywiseActivity> timesheetData) {
+		this.timesheetData = timesheetData;
+	}
+	@Override
+	public String toString() {
+		return "TimesheetEntity [id=" + id + ", employeeName=" + employeeName + ", employeeNumber=" + employeeNumber
+				+ ", month=" + month + ", year=" + year + ", clientName=" + clientName + ", supervisorName="
+				+ supervisorName + ", assignmentName=" + assignmentName + ", holidaysInput=" + holidaysInput
+				+ ", status=" + status + ", timesheetData=" + timesheetData + "]";
+	}
 	public TimesheetEntity(String id, String employeeName, String employeeNumber, String month, String year,
-			String clientName, String supervisorName, String assignmentName, String holidaysInput,
+			String clientName, String supervisorName, String assignmentName, String holidaysInput, String status,
 			List<DaywiseActivity> timesheetData) {
 		this.id = id;
 		this.employeeName = employeeName;
@@ -38,94 +109,10 @@ public class TimesheetEntity {
 		this.supervisorName = supervisorName;
 		this.assignmentName = assignmentName;
 		this.holidaysInput = holidaysInput;
+		this.status = status;
 		this.timesheetData = timesheetData;
 	}
-
-	public String getId() {
-		return id;
+	public TimesheetEntity() {
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getAssignmentName() {
-		return assignmentName;
-	}
-
-	public void setAssignmentName(String assignmentName) {
-		this.assignmentName = assignmentName;
-	}
-
-	public String getHolidaysInput() {
-		return holidaysInput;
-	}
-
-	public void setHolidaysInput(String holidaysInput) {
-		this.holidaysInput = holidaysInput;
-	}
-
-	public String getEmployeeName() {
-		return employeeName;
-	}
-
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-
-	public String getEmployeeNumber() {
-		return employeeNumber;
-	}
-
-	public void setEmployeeNumber(String employeeNumber) {
-		this.employeeNumber = employeeNumber;
-	}
-
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-	public String getClientName() {
-		return clientName;
-	}
-
-	public void setClientName(String clientName) {
-		this.clientName = clientName;
-	}
-
-	public String getSupervisorName() {
-		return supervisorName;
-	}
-
-	public void setSupervisorName(String supervisorName) {
-		this.supervisorName = supervisorName;
-	}
-
-	public List<DaywiseActivity> getTimesheetData() {
-		return timesheetData;
-	}
-
-	public void setTimesheetData(List<DaywiseActivity> timesheetData) {
-		this.timesheetData = timesheetData;
-	}
-
-	@Override
-	public String toString() {
-		return "TimesheetEntity [id=" + id + ", employeeName=" + employeeName + ", employeeNumber=" + employeeNumber
-				+ ", month=" + month + ", year=" + year + ", clientName=" + clientName + ", supervisorName="
-				+ supervisorName + ", assignmentName=" + assignmentName + ", holidaysInput=" + holidaysInput
-				+ ", timesheetData=" + timesheetData + "]";
-	}
 }

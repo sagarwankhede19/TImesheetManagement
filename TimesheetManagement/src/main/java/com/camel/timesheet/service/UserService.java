@@ -30,5 +30,9 @@ public class UserService {
         User user = repo.findByEmail(username);
         return user != null && user.getPassword().equals(password);
     }
+	
+	public User getUserByUsernameAndPassword(String email, String password ) {
+		return repo.findByEmailAndPassword(email, password);
+	}
 
 }

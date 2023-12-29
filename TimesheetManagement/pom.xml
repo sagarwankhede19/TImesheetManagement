@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.camel.timesheet</groupId>
-	<artifactId>JavaTechie</artifactId>
+	<artifactId>timesheet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>JavaTechie</name>
+	<name>timesheet</name>
 	<description>Demo project for Timesheet </description>
 	<properties>
 		<java.version>17</java.version>

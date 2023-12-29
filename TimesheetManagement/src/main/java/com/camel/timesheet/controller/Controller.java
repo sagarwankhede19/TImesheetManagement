@@ -31,17 +31,17 @@ public class Controller extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		restConfiguration().component("servlet").port(8082).enableCORS(true).host("localhost")
-				.bindingMode(RestBindingMode.json);
+		.bindingMode(RestBindingMode.json);
 
 		onException(Exception.class).handled(true).log("Exception occurred: ${exception.message}")
-				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(500))
-				.setBody(simple("Internal Server Error: ${exception.message}"));
+		.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(500))
+		.setBody(simple("Internal Server Error: ${exception.message}"));
 
 		rest("/email").post("/send").produces("text/plain").to("direct:sendEmail");
 
 		from("direct:sendEmail").setHeader("Subject", constant("Test Email"))
-				.setBody(constant("Hello, this is a test email from Camel!"))
-				.to("smtps://smtp.gmail.com:465?username=babasahebudamle1007@gmail.com&password=qgge nnbr xjvj tqmn&to=anjali.medisetti@vkraftsoftware.com");
+		.setBody(constant("Hello, this is a test email from Camel!"))
+		.to("smtps://smtp.gmail.com:465?username=babasahebudamle1007@gmail.com&password=qgge nnbr xjvj tqmn&to=animish.aher@vkraftsoftware.com");
 
 		// ------------------------Save Timesheet----------------------------
 		rest().post("/savetimesheet").type(TimesheetEntity.class).to("direct:processTimesheet");
@@ -51,13 +51,13 @@ public class Controller extends RouteBuilder {
 				TimesheetEntity timesheetDataToSave = exchange.getIn().getBody(TimesheetEntity.class);
 				if (services.timesheetExists(timesheetDataToSave)) {
 					exchange.getMessage()
-							.setBody("Timesheet already exists for " + timesheetDataToSave.getMonth() + " month");
+					.setBody("Timesheet already exists for " + timesheetDataToSave.getMonth() + " month");
 					exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 409);
 				} else {
 					services.saveTimesheet(timesheetDataToSave);
 					System.out.println(timesheetDataToSave);
 					exchange.getMessage()
-							.setBody("Timesheet is saved for " + timesheetDataToSave.getMonth() + " month");
+					.setBody("Timesheet is saved for " + timesheetDataToSave.getMonth() + " month");
 					exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 201);
 				}
 			}
@@ -65,10 +65,10 @@ public class Controller extends RouteBuilder {
 
 		// ------------------------Update Timesheets--------------------------
 		rest().put("/updatetimesheet").param().name("employeeNumber").type(RestParamType.query).endParam().param()
-				.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
-				.endParam().param().name("clientName").type(RestParamType.query).endParam().param()
-				.name("assignmentName").type(RestParamType.query).endParam().param().name("holidaysInput")
-				.type(RestParamType.query).endParam().to("direct:updateTimeSheet");
+		.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
+		.endParam().param().name("clientName").type(RestParamType.query).endParam().param()
+		.name("assignmentName").type(RestParamType.query).endParam().param().name("holidaysInput")
+		.type(RestParamType.query).endParam().to("direct:updateTimeSheet");
 		from("direct:updateTimeSheet").process(exchange -> {
 			String employeeNumber = exchange.getIn().getHeader("employeeNumber", String.class);
 			String month = exchange.getIn().getHeader("month", String.class);
@@ -109,15 +109,15 @@ public class Controller extends RouteBuilder {
 
 				} else {
 					exchange.getMessage()
-							.setBody("Error: TimeSheetEntity with number '" + employeeNumber + "' not found");
+					.setBody("Error: TimeSheetEntity with number '" + employeeNumber + "' not found");
 					exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
 				}
 			}
 		});
 		// ---------------- Delete Timesheet-------------------------
 		rest().delete("/deleteemp").param().name("employeeNumber").type(RestParamType.query).endParam().param()
-				.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
-				.endParam().to("direct:delete");
+		.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
+		.endParam().to("direct:delete");
 		from("direct:delete").process(exchange -> {
 			String empNumber = exchange.getIn().getHeader("employeeNumber", String.class);
 			String month = exchange.getIn().getHeader("month", String.class);
@@ -144,8 +144,8 @@ public class Controller extends RouteBuilder {
 		// -------------------------------------
 
 		rest().get("/gettimesheet").param().name("employeeNumber").type(RestParamType.query).endParam().param()
-				.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
-				.endParam().to("direct:processName");
+		.name("month").type(RestParamType.query).endParam().param().name("year").type(RestParamType.query)
+		.endParam().to("direct:processName");
 		from("direct:processName").process(exchange -> {
 			String number = exchange.getIn().getHeader("employeeNumber", String.class);
 			String month = exchange.getIn().getHeader("month", String.class);
@@ -196,14 +196,12 @@ public class Controller extends RouteBuilder {
 
 		// --------------------------------------------
 		rest("/verifyuser").get().param().name("username").type(RestParamType.query).endParam().param().name("password")
-				.type(RestParamType.query).endParam().to("direct:user");
+		.type(RestParamType.query).endParam().to("direct:user");
 		from("direct:user").process(exchange -> {
 			String username = exchange.getIn().getHeader("username", String.class);
 			String password = exchange.getIn().getHeader("password", String.class);
 			log.info("Received request with username: {} and password: {}", username, password);
-			User user = new User();
-			user.setEmail(username);
-			user.setPassword(password);
+			User user = userService.getUserByUsernameAndPassword(username, password);
 			boolean isUserValid = verifyUser(user);
 			if (isUserValid) {
 				exchange.getMessage().setBody(user);
@@ -213,6 +211,31 @@ public class Controller extends RouteBuilder {
 				exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
 			}
 		});
+
+
+		//-----------------GetApprovedTimesheets--------------------
+		rest().get("/getApprovedTimesheeets")
+		.param().name("status").type(RestParamType.query).endParam()
+		.param().name("month").type(RestParamType.query).endParam()
+		.param().name("year").type(RestParamType.query).endParam().to("direct:approvedTimesheeets");
+		from("direct:approvedTimesheeets").process(exchange -> {
+
+			String status = exchange.getIn().getHeader("status", String.class);
+			String month = exchange.getIn().getHeader("month", String.class);
+			String year = exchange.getIn().getHeader("year", String.class);
+
+			if (services.getApprovedTimesheet(status, month, year)!=null) {
+
+				exchange.getMessage().setBody(services.getApprovedTimesheet(status, month, year));
+				exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+			}
+			else {
+
+				exchange.getMessage().setBody("false");
+				exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+			}
+		});
+
 	}
 
 	private boolean verifyUser(User user) {
@@ -233,7 +256,6 @@ public class Controller extends RouteBuilder {
 
 	private boolean isValidNumber(String number) {
 		System.out.println("Valid" + number);
-//		return number != null && number.matches("^VKSS\\d{3,4}$");
 		return number != null && number.matches("^(KSS|VKSS)\\d{2,4}$");
 	}
 

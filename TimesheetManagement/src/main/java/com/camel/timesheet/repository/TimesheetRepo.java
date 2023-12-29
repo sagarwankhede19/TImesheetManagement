@@ -1,5 +1,7 @@
 package com.camel.timesheet.repository;
 
+import java.util.List;
+
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,7 @@ public interface TimesheetRepo extends ElasticsearchRepository<TimesheetEntity, 
 	TimesheetEntity findByEmployeeNumberAndMonthAndYear(String employeeNumber, String month, String year);
 
 	void deleteByEmployeeNumberAndMonthAndYear(String empNumber, String month, String year);
+	
+	List<TimesheetEntity> findByStatusAndMonthAndYear(String status,String month,String year);
 
 }
